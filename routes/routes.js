@@ -3,12 +3,11 @@ const controller = require('../controllers/controller')
 
 const router =  Router();
 
-router.get('/users', controller.getUser);
 router.post('/login', controller.loginUser)
 router.post('/signup', controller.signUpUser)
-router.post('/upload', controller.imageUpload)
-router.post('/doctor', controller.registerDoctor)
-router.get('/doctordatafetch', controller.fetchDoctorData)
+router.post('/addpost', controller.addPost)
+router.post('/addcomment', controller.addComment)
+
 
 
 

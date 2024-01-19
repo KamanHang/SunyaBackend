@@ -23,7 +23,7 @@ const port = 3000;
 const multer  = require('multer')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'images/patient')
+    cb(null, 'images/user')
   },
   filename: function(req, file, cb) {
     return cb(null, `${Date.now()}-${file.originalname}`);
@@ -43,13 +43,25 @@ const storageDoc = multer.diskStorage({
 
 const uploadDoc = multer({ storage: storageDoc });
 
+const addpost = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'images/post')
+  },
+  filename: function(req, file, cb) {
+    return cb(null, `${Date.now()}-${file.originalname}`);
+  }
+})
+
+const uploadPost = multer({ storage: addpost });
+
+
 
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"))
 
 app.get("/", (req, res)=> {
-    return res.render("doctor");
+    return res.render("home.ejs");
 })
 
 
@@ -64,6 +76,8 @@ app.get("/", (req, res)=> {
 
 app.get('/users', routes);
 app.post('/login', routes);
+app.post('/addpost', uploadPost.single("image") , routes);
+app.post('/addcomment',  routes);
 app.post('/signup', upload.single("image"), routes);
 app.post('/doctor', uploadDoc.single("image"), routes);
 app.get('/doctordatafetch', routes);

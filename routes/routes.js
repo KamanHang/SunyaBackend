@@ -7,9 +7,12 @@ router.post('/login', controller.loginUser)
 router.post('/signup', controller.signUpUser)
 router.post('/addpost', controller.addPost)
 router.post('/addcomment', controller.addComment)
+router.get('/getpost', controller.getPost)
+router.get('/getcomment', controller.getComment)
 
 
 
+ 
 
 
 

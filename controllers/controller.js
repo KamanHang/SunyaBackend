@@ -4,7 +4,7 @@ const query = require("../queries/queries");
 const bcrypt = require("bcryptjs");
 
 const addPost = async (req, resp) => {
-  const { post_desc, up_vote, tag, email, image } = req.body;
+  const { post_desc, up_vote, tag, user_email, image } = req.body;
 //   image = req.file.path;
 
   let present_date = Date.now();
@@ -30,7 +30,7 @@ const addPost = async (req, resp) => {
   console.log(image);
   console.log(posted_date);
   console.log(post_time);
-  console.log(email);
+  console.log(user_email);
 
 
 
@@ -42,7 +42,7 @@ const addPost = async (req, resp) => {
   } else {
     con.query(
       query.addNewPost,
-      [post_desc, image, up_vote, posted_date, tag, email, post_time],
+      [post_desc, image, up_vote, posted_date, tag, user_email, post_time],
       async function (err, data) {
         if (err) {
           console.log(err);
@@ -100,6 +100,17 @@ const getPost = async (req, resp) => {
 
 const addComment = async (req, resp) => {
     const { comment_desc, user_email, post_id } = req.body;
+
+    
+    let present_date = Date.now();
+
+
+    let date_ob = new Date(present_date);
+    let date = date_ob.getDate();
+    let month = date_ob.getMonth() + 1;
+    let year = date_ob.getFullYear();
+  
+    const comment_date = year + "/" + month + "/" + date;
   
     if (!comment_desc || !user_email || !post_id) {
       console.log("Please fill all the fields");
@@ -110,7 +121,7 @@ const addComment = async (req, resp) => {
     try {
       await con.query(
         query.addComment,
-        [comment_desc, user_email, post_id],
+        [comment_desc, user_email,comment_date, post_id],
         function (err, data) {
           if (err) {
             console.error("Error adding comment:", err);

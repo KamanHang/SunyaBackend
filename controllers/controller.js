@@ -2,6 +2,127 @@ const { time } = require("console");
 const con = require("../config/dbConfig");
 const query = require("../queries/queries");
 const bcrypt = require("bcryptjs");
+const { performance } = require('perf_hooks');
+const { VM } = require('vm2');
+
+// const huggingFaceAPICall = async (inputs) => {
+//      inputs = "console.log(variableName); let obj = {}; console.log(obj.property); let x = 5 console.log(x + 2);"
+//     const response = await fetch(
+//         "https://api-inference.huggingface.co/models/microsoft/codereviewer",
+//         {
+//             headers: { "Authorization": "Bearer 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" }, // Replace {API_TOKEN} with your actual API token
+//             method: "POST",
+//             body: JSON.stringify({ inputs }),
+//         }
+//     );
+//     const result = await response.json();
+//     console.log(result);
+//     return result;
+//   };
+  
+//   const huggingFaceAPICall = async (inputs) => {
+//     inputs = "console.log(variableName); let obj = {}; console.log(obj.property); let x = 5 console.log(x + 2);"
+//    const response = await fetch(
+//        "https://api-inference.huggingface.co/models/microsoft/unixcoder-base",
+//        {
+//            headers: { "Authorization": "Bearer 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" }, // Replace {API_TOKEN} with your actual API token
+//            method: "POST",
+//            body: JSON.stringify({ inputs }),
+//        }
+//    );
+//    const result = await response.json();
+//    console.log(result);
+//    return result;
+//  };
+
+const measurePerformance = async (req, res) => {
+  const { code } = req.body;
+
+  try {
+      // Record the start time
+      const startTime = performance.now();
+
+      // Execute the code in a VM
+      const vm = new VM();
+      vm.run(code);
+
+      // Record the end time
+      const endTime = performance.now();
+
+      // Calculate the time difference in milliseconds
+      const executionTime = endTime - startTime;
+
+      console.log(`Execution time: ${executionTime} milliseconds`);
+
+      // Get memory usage information
+      const memoryUsage = process.memoryUsage();
+
+      // Extract relevant memory information
+      const memoryConsumed = memoryUsage.heapUsed / (1024 * 1024); // Convert to megabytes
+
+      console.log(`Memory consumed: ${memoryConsumed} MB`);
+
+      // Send both execution time and memory consumed to the frontend
+      res.status(200).json({ executionTime, memoryConsumed });
+  } catch (error) {
+      console.error(`Error during code execution: ${error.message}`);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+
+const codeReview = async (req, res) => {
+
+    const { inputs } = req.body;
+
+   const response = await fetch(
+       "https://api-inference.huggingface.co/models/microsoft/codereviewer",
+       {
+           headers: { "Authorization": "Bearer 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" }, // Replace {API_TOKEN} with your actual API token
+           method: "POST",
+           body: JSON.stringify({ inputs }),
+       }
+   );
+   const result = await response.json();
+   res.send(result);
+   console.log(result);
+   return result;
+ };
+
+ const graphData = async (inputs) => {
+    inputs = "console.log(variableName); let obj = {};<mask> console.log(obj.property); let x = 5 console.log(x + 2);"
+   const response = await fetch(
+       "https://api-inference.huggingface.co/models/microsoft/graphcodebert-base",
+       {
+           headers: { "Authorization": "Bearer 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" }, // Replace {API_TOKEN} with your actual API token
+           method: "POST",
+           body: JSON.stringify({ inputs }),
+       }
+   );
+   const result = await response.json();
+   console.log(result);
+   return result;
+ };
+
+ const huggingFaceAPICall = async (req, res) => {
+
+    const { inputs } = req.body;
+
+
+   const response = await fetch(
+       "https://api-inference.huggingface.co/models/microsoft/codebert-base",
+       {
+           headers: { "Authorization": "Bearer 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" }, // Replace {API_TOKEN} with your actual API token
+           method: "POST",
+           body: JSON.stringify({ inputs }),
+       }
+   );
+   const result = await response.json();
+   console.log(result);
+   return result;
+ };
+
 
 const addPost = async (req, resp) => {
   const { post_desc, up_vote, tag, user_email, image } = req.body;
@@ -246,5 +367,7 @@ module.exports = {
   addPost,
   addComment,
   getPost,
-  getComment
+  getComment,
+  measurePerformance,
+
 };

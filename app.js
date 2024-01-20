@@ -81,6 +81,8 @@ app.post('/addcomment',  routes);
 app.post('/signup', upload.single("image"), routes);
 app.post('/doctor', uploadDoc.single("image"), routes);
 app.get('/doctordatafetch', routes);
+app.post('/measurePerformance', routes)
+
 
 
 // app.post('/upload', upload.single("image"),routes);

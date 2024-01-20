@@ -9,6 +9,8 @@ router.post('/addpost', controller.addPost)
 router.post('/addcomment', controller.addComment)
 router.get('/getpost', controller.getPost)
 router.get('/getcomment', controller.getComment)
+router.post('/measurePerformance', controller.measurePerformance)
+
 
 
 

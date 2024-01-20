@@ -65,8 +65,6 @@ app.get("/", (req, res)=> {
 })
 
 
-
-
 // console.log(storage);
 
 // app.get("/", (req,res)=>{
@@ -77,6 +75,8 @@ app.get("/", (req, res)=> {
 app.get('/users', routes);
 app.post('/login', routes);
 app.post('/addpost', uploadPost.single("image") , routes);
+app.get('/getpost' , routes);
+app.get('/getcomment' , routes);
 app.post('/addcomment',  routes);
 app.post('/signup', upload.single("image"), routes);
 app.post('/doctor', uploadDoc.single("image"), routes);

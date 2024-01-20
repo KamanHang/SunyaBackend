@@ -35,7 +35,7 @@ const addPost = async (req, resp) => {
 
 
 
-  if (!post_desc || !up_vote || !tag || !image) {
+  if (!post_desc || !up_vote || !tag ) {
     console.log("Please fill al the fields");
 
     resp.status(400).send("Please fill all the fields");

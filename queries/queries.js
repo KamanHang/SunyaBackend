@@ -13,7 +13,7 @@ const addNewPost = "INSERT INTO posts ( post_desc,image,up_vote,posted_date,tag,
 const addComment = "INSERT INTO comments ( comment_desc,comment_date ) VALUES($1,$2) "
 
 
-const getPost = "SELECT post_desc,up_vote,posts.image,posted_date,post_time, user_name,users.image FROM posts inner JOIN users on posts.user_email=users.email;"
+const getPost = "SELECT post_desc, up_vote, posts.image AS post_image, posted_date, post_time, user_name, users.image AS user_image FROM posts INNER JOIN users ON posts.user_email = users.email;"
 const getComment = "SELECT * FROM Comments WHERE post_id = $1 "
 
 

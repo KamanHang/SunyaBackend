@@ -21,7 +21,7 @@ const addPost = async (req, resp) => {
   const hours = timeObject.getHours();
 
   const minutes = timeObject.getMinutes();
-
+ 
   const post_time = hours + ":" + minutes;
 
   console.log(post_desc);
@@ -99,7 +99,7 @@ const getPost = async (req, resp) => {
 };
 
 const addComment = async (req, resp) => {
-    const { comment_desc, user_email, post_id } = req.body;
+    const { comment_desc, user_email, tag, post_id } = req.body;
 
     
     let present_date = Date.now();
